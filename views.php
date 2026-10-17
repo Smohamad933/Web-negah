@@ -1,6 +1,11 @@
 <?php
 // Shared public components. Not an independently accessible endpoint.
 if (!function_exists('e')) { http_response_code(404); exit; }
+function brand_class(array $brand): string {
+ $uid=$brand['uid']??'';
+ if(!is_string($uid)||!preg_match('/^[a-f0-9]{16}$/D',$uid))$uid=substr(hash('sha256',($brand['name']??'').'|'.($brand['logo']??'')),0,16);
+ return 'brand-'.$uid;
+}
 function brand_logo(array $site): void {
  $path=media_path($site['logo']??'assets/brand-logo.webp');
  if(!$path)$path='/assets/brand-logo.webp';
