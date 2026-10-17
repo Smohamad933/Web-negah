@@ -5,3 +5,7 @@ data/attempts.json
 uploads/*
 !uploads/.gitkeep
 !uploads/web.config
+
+data/updates/
+data/update-maintenance.json
+.negah-update-*

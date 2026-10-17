@@ -44,7 +44,7 @@ class VisibleText(HTMLParser):
 
 home = request('/')
 assert '/works.php' in home and 'همه کارها' in home
-assert 'class="site-logo"' in home
+assert 'header-wordmark' in home and 'نگاه مدیا' in home
 visible = VisibleText()
 visible.feed(home)
 for decoration in ('NEGAH', 'CREATIVE STUDIO', 'AVID', 'POINT OF VIEW', 'LESS, BUT BETTER'):
@@ -57,6 +57,6 @@ for project in SITE['projects']:
     page = request('/project.php?id=' + urllib.parse.quote(key))
     assert project['title'] in page and 'درباره این پروژه' in page
 request('/project.php?id=missing', 404)
-for private in ('/data/auth.json', '/data/site.json', '/.git/HEAD', '/core.php', '/views.php', '/admin-projects.php', '/tools/preview.mjs'):
+for private in ('/data/auth.json', '/data/site.json', '/.git/HEAD', '/core.php', '/views.php', '/admin-projects.php', '/tools/preview.mjs', '/updater.php', '/admin-updates.php', '/data/updates/history.json'):
     request(private, 404)
 print('PASS public pages, stable project links, logo, Persian artwork and private-route protection')

@@ -1,5 +1,10 @@
 <?php
 declare(strict_types=1);
+// Admin stays available for recovery while public pages wait for code deployment.
+if(is_file(__DIR__.'/data/update-maintenance.json') && basename(parse_url($_SERVER['REQUEST_URI']??'',PHP_URL_PATH)??'')!=='admin.php') {
+    http_response_code(503);header('Retry-After: 60');header('Content-Type: text/html; charset=utf-8');header('Cache-Control: no-store');
+    exit('<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>در حال به‌روزرسانی</title><body style="font-family:Tahoma,sans-serif;background:#fbfcf9;color:#173f35;text-align:center;padding:15vh 24px"><h1>کمی بعد برمی‌گردیم.</h1><p>سایت در حال به‌روزرسانی است. لطفاً چند لحظه دیگر صفحه را تازه کنید.</p></body></html>');
+}
 ini_set('session.use_strict_mode', '1');
 session_set_cookie_params(['httponly'=>true,'samesite'=>'Lax','secure'=>!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off']);
 session_start();
