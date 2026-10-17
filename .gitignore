@@ -1,0 +1,7 @@
+node_modules/
+image-search/
+data/messages.json
+data/attempts.json
+uploads/*
+!uploads/.gitkeep
+!uploads/web.config
