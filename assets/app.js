@@ -31,24 +31,6 @@ document.querySelectorAll('[data-service]').forEach(link => link.addEventListene
  const select = document.querySelector('select[name="service"]');
  if (select) { select.value = link.dataset.service; select.dispatchEvent(new Event('change')); }
 }));
-const dialog = document.querySelector('#project-dialog');
-document.querySelectorAll('.project-card').forEach(card => card.addEventListener('click', () => {
- dialog.querySelector('h2').textContent = card.dataset.title;
- dialog.querySelector('#project-description').textContent = card.dataset.description;
- dialog.querySelector('.section-kicker').textContent = card.dataset.label;
- const preview = card.querySelector('.project-art').cloneNode(true);
- preview.removeAttribute('id');
- dialog.querySelector('.dialog-art').replaceChildren(preview);
- dialog.showModal(); document.body.classList.add('has-modal');
-}));
-dialog?.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
-dialog?.addEventListener('close', () => document.body.classList.remove('has-modal'));
-dialog?.addEventListener('click', event => {
- if (event.target !== dialog) return;
- const r = dialog.getBoundingClientRect();
- if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close();
-});
-document.querySelector('#dialog-contact')?.addEventListener('click', () => dialog.close());
 const serviceDetails = [...document.querySelectorAll('.service-detail')];
 serviceDetails.forEach(detail => detail.addEventListener('toggle', () => {
  if (detail.open) serviceDetails.forEach(other => { if (other !== detail) other.open = false; });
@@ -57,28 +39,6 @@ const floatingHeader = document.querySelector('.header');
 if (floatingHeader) {
  const updateHeader = () => floatingHeader.classList.toggle('is-scrolled', window.scrollY > 24);
  window.addEventListener('scroll', updateHeader, {passive:true}); updateHeader();
-}
-const gallery = document.querySelector('.projects-grid');
-const galleryButtons = document.querySelectorAll('[data-gallery]');
-if (gallery && galleryButtons.length) {
- const cards = [...gallery.querySelectorAll('.project-card')];
- function nearestCard() {
-  const edge = gallery.getBoundingClientRect().right;
-  let index = 0, distance = Infinity;
-  cards.forEach((card,i) => { const d = Math.abs(card.getBoundingClientRect().right - edge); if (d < distance) {distance = d; index = i;} });
-  return index;
- }
- function updateGalleryControls() {
-  const current = nearestCard();
-  galleryButtons.forEach(button => button.disabled = button.dataset.gallery === 'previous' ? current === 0 : current === cards.length - 1);
- }
- galleryButtons.forEach(button => button.addEventListener('click', () => {
-  const direction = button.dataset.gallery === 'next' ? 1 : -1;
-  const target = cards[Math.max(0,Math.min(cards.length - 1,nearestCard() + direction))];
-  if (target) gallery.scrollBy({left:target.getBoundingClientRect().right - gallery.getBoundingClientRect().right,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
- }));
- gallery.addEventListener('scroll', updateGalleryControls, {passive:true});
- window.addEventListener('resize',updateGalleryControls); updateGalleryControls();
 }
 const form = document.querySelector('.contact-form');
 if (form) {
