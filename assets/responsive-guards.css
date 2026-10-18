@@ -1,0 +1,13 @@
+/* Loaded after custom CSS: desktop heading sizes must not clip smaller screens. */
+.header .header-wordmark b{font-weight:700}
+@media(max-width:1199px){
+ .studio-hero>.studio-copy{min-width:0;max-width:100%}
+ .studio-hero .studio-copy h1{max-width:100%;line-height:1.6!important}
+ .studio-hero .studio-copy h1>span{display:block;max-width:100%;white-space:normal!important;overflow-wrap:break-word;word-break:normal;line-height:inherit!important}
+}
+@media(min-width:601px) and (max-width:1199px){
+ .studio-hero .studio-copy h1,.studio-hero .studio-copy h1>span{font-size:clamp(28px,4.2vw,50px)!important}
+}
+@media(max-width:600px){
+ .studio-hero .studio-copy h1,.studio-hero .studio-copy h1>span{font-size:clamp(28px,8vw,42px)!important;letter-spacing:-.8px!important}
+}

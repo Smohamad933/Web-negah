@@ -10,6 +10,11 @@ function public_custom_css(array $site): void {
  $css=(string)($site['custom_css']??'');
  if($css!=='')echo '<style id="public-custom-css">'.str_replace('<','\\3c ',$css).'</style>';
 }
+function public_responsive_guards(): void {
+ echo '<style id="responsive-guards">';
+ readfile(__DIR__.'/assets/responsive-guards.css');
+ echo '</style>';
+}
 function brand_logo(array $site): void {
  $path=media_path($site['logo']??'assets/brand-logo.webp');
  if(!$path)$path='/assets/brand-logo.webp';
@@ -28,7 +33,7 @@ function project_card(array $project): void { ?>
 <a class="project-card" href="<?=e(project_url($project))?>" data-category="<?=e($project['category'])?>"><?php project_art($project);?><div class="project-caption"><div><span><?=e($project['label'])?></span><h3><?=e($project['title'])?></h3></div><span class="round-arrow"><?=icon('arrow')?></span></div></a>
 <?php }
 function public_header(string $title, string $description, array $site): void { ?>
-<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="<?=e($description)?>"><meta name="theme-color" content="#fbfcf9"><title><?=e($title)?> — <?=e($site['brand'])?></title><link rel="icon" href="<?=e(media_path($site['logo']??'assets/brand-logo.webp'))?>"><style id="site-styles"><?php readfile(__DIR__.'/assets/style.css');readfile(__DIR__.'/assets/home.css'); ?><?php if(!empty($site['font']) && preg_match('~^uploads/[a-f0-9]+\.(woff2?|ttf)$~',$site['font'])):?>@font-face{font-family:Custom;src:url('/<?=e($site['font'])?>')}body,input,textarea,select,button{font-family:Custom,Vazirmatn,sans-serif!important}<?php endif;?></style><?php public_custom_css($site); ?></head><body><a class="skip-link" href="#main-content">رفتن به محتوای اصلی</a><header class="header"><div class="container nav"><a class="logo header-wordmark" href="/" aria-label="نگاه مدیا، خانه"><b><?=e($site['brand'])?></b></a><nav id="navigation" aria-label="منوی اصلی"><a href="/works.php" class="active" aria-current="page">همه کارها</a><a href="/#services">خدمات ما</a><a href="/#about">درباره ما</a></nav><a class="nav-contact" href="/#contact">شروع همکاری <?=icon('arrow')?></a><button class="menu-toggle" aria-label="باز کردن منو" aria-expanded="false" aria-controls="navigation"><?=icon('menu')?></button></div></header>
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="<?=e($description)?>"><meta name="theme-color" content="#fbfcf9"><title><?=e($title)?> — <?=e($site['brand'])?></title><link rel="icon" href="<?=e(media_path($site['logo']??'assets/brand-logo.webp'))?>"><style id="site-styles"><?php readfile(__DIR__.'/assets/style.css');readfile(__DIR__.'/assets/home.css'); ?><?php if(!empty($site['font']) && preg_match('~^uploads/[a-f0-9]+\.(woff2?|ttf)$~',$site['font'])):?>@font-face{font-family:Custom;src:url('/<?=e($site['font'])?>')}body,input,textarea,select,button{font-family:Custom,Vazirmatn,sans-serif!important}<?php endif;?></style><?php public_custom_css($site); public_responsive_guards(); ?></head><body><a class="skip-link" href="#main-content">رفتن به محتوای اصلی</a><header class="header"><div class="container nav"><a class="logo header-wordmark" href="/" aria-label="نگاه مدیا، خانه"><b><?=e($site['brand'])?></b></a><nav id="navigation" aria-label="منوی اصلی"><a href="/works.php" class="active" aria-current="page">همه کارها</a><a href="/#services">خدمات ما</a><a href="/#about">درباره ما</a></nav><a class="nav-contact" href="/#contact">شروع همکاری <?=icon('arrow')?></a><button class="menu-toggle" aria-label="باز کردن منو" aria-expanded="false" aria-controls="navigation"><?=icon('menu')?></button></div></header>
 <?php }
 function public_footer(array $site): void { ?>
 <footer class="container footer"><a class="logo" href="/"><?php brand_logo($site);?></a><p>© <?=e($site['legal'])?>؛ تمام حقوق محفوظ است.</p><a href="/#contact">گفت‌وگو درباره پروژه ↗</a></footer><script src="/assets/app.js" defer></script></body></html>
