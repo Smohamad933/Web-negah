@@ -203,10 +203,10 @@ html{scroll-padding-top:120px}
 .partner-group{display:flex;align-items:center;justify-content:space-around;gap:65px;flex:0 0 auto;min-width:clamp(580px,86vw,1240px);padding:0 45px}
 .partner-group .partner-logo{width:auto;min-width:100px;max-width:260px;min-height:55px;flex-shrink:0;direction:rtl}
 .partner-logo>span{font-size:18px;font-weight:500;letter-spacing:-.3px;color:#66765c}
-.partner-logo img{max-width:125px;max-height:42px;opacity:.6;filter:grayscale(1)}
+.partner-logo img{max-width:125px;max-height:70px;opacity:.6;filter:grayscale(1)}
 .partner-section:hover .partner-track,.partner-section.is-paused .partner-track{animation-play-state:paused}
 @keyframes partner-drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media(max-width:600px){.partner-section{padding-block:14px 24px}.partner-heading{gap:7px;margin-bottom:14px}.partner-section .partner-heading h2{font-size:10px}.partner-group{gap:40px;padding-inline:30px;min-width:560px}.partner-group .partner-logo{width:auto;min-width:100px;min-height:45px}.partner-logo>span{font-size:16px}.partner-logo img{max-height:35px}.partner-track{animation-duration:60s}}
+@media(max-width:600px){.partner-section{padding-block:14px 24px}.partner-heading{gap:7px;margin-bottom:14px}.partner-section .partner-heading h2{font-size:10px}.partner-group{gap:40px;padding-inline:30px;min-width:560px}.partner-group .partner-logo{width:auto;min-width:100px;min-height:45px}.partner-logo>span{font-size:16px}.partner-logo img{max-height:70px}.partner-track{animation-duration:60s}}
 @media(prefers-reduced-motion:reduce){.partner-track{animation:none!important;transform:none;will-change:auto;width:100%}.partner-group{min-width:0;width:100%;flex-wrap:wrap;gap:20px;padding:0;justify-content:center}.partner-group[aria-hidden=true]{display:none}.partner-viewport{mask-image:none;-webkit-mask-image:none}.partner-motion-toggle{display:none}}
 
 /* Real brand mark and linked portfolio. */
@@ -388,3 +388,18 @@ html{scroll-padding-top:120px}
  #gallery-dialog figcaption{font-size:11px}
 }
 @media(max-width:360px){.header .logo .site-logo{width:80px;height:35px}.project-caption h3{font-size:13px}.project-heading h1{font-size:26px}.project-cover .project-art{height:260px}.project-cover .avid-board{height:210px}.project-cover .avid-logo{font-size:44px}.project-cover .avid-paper{height:137px}.project-cover .browser-body strong{font-size:23px}.project-cover .digital-sculpture{height:93px;width:78px;left:10px;top:41px}.project-cover .digital-sculpture:after{inset:24px}}
+
+/* Hover detail overlay is outside the masked logo ribbon. */
+.partner-popover{display:none}
+@media(min-width:1024px) and (hover:hover) and (pointer:fine){
+.partner-group .partner-logo{cursor:pointer;border-radius:10px}
+.partner-logo:focus-visible{outline:2px solid var(--olive);outline-offset:6px}
+.partner-section.is-detail-open .partner-track{animation-play-state:paused}
+.partner-popover:not([hidden]){display:block;position:fixed;z-index:120;width:330px;max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);overflow:auto;direction:rtl;padding:25px;background:rgba(250,252,247,.98);border:1px solid #dfe7d6;border-radius:20px;box-shadow:0 18px 65px #173f3526;opacity:0;transform:translateY(8px) scale(.98);transition:opacity .24s ease,transform .32s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.partner-popover.is-visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.partner-popover small{display:block;color:#839176;font-size:10px;margin-bottom:8px}
+.partner-popover h3{font-size:19px;font-weight:500;overflow-wrap:anywhere}
+.partner-popover p{font-size:12px;color:#77856c;line-height:2.1;margin:12px 0 20px;white-space:pre-line;overflow-wrap:anywhere}
+.partner-popover a{display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid #dfe7d6;padding-top:15px;color:var(--green);font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){.partner-popover:not([hidden]){transition:none;transform:none}}
