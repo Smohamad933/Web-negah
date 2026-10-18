@@ -166,3 +166,19 @@ body{background:var(--paper);color:var(--ink)}
 .gallery-controls button:hover:not(:disabled){background:#e3e9d8}
 .lightbox-controls button,.lightbox-close{background:#344a31;border-color:#667e58;color:#fffbed}
 #gallery-dialog{background:#243521;color:#fbf9ed}
+
+/* Liquid-glass navigation: transparent body, soft refraction and beveled light. */
+.header{isolation:isolate;background:linear-gradient(125deg,#fffef73d,#ffffff19 52%,#fff8e633);border:1px solid #ffffffe0;box-shadow:inset 0 1px 0 #ffffffbd,inset 0 -1px 0 #4c5e4220,0 8px 30px #293d2910,0 1px 3px #ffffff40;backdrop-filter:blur(26px) saturate(165%) contrast(1.04);-webkit-backdrop-filter:blur(26px) saturate(165%) contrast(1.04)}
+.header:before{content:'';position:absolute;inset:1px;border-radius:inherit;pointer-events:none;z-index:-1;background:linear-gradient(155deg,#ffffff65 0%,#ffffff08 37%,#ffffff00 62%,#ffffff32 100%);box-shadow:inset 1px 1px 2px #ffffffb0,inset -1px -1px 2px #ffffff40}
+.header:after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 12% 0%,#ffffff8a,transparent 46%),radial-gradient(ellipse at 93% 100%,#fffce56b,transparent 40%);opacity:.7}
+.header .nav{position:relative;z-index:1}
+.header.is-scrolled{background:linear-gradient(125deg,#fffef75c,#fffdf539);box-shadow:inset 0 1px 0 #ffffffc0,inset 0 -1px 0 #5d6b4926,0 9px 32px #263a251a}
+.hero-scroll{animation:hero-scroll-nudge 3s ease-in-out infinite;will-change:transform}
+@keyframes hero-scroll-nudge{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
+.home-page .landscape-hero .studio-eyebrow{margin-bottom:14px}
+.home-page .landscape-hero .studio-copy h1{line-height:1.22}
+.home-page .landscape-hero .studio-copy>p{margin-top:11px;line-height:1.9}
+.home-page .landscape-hero .studio-actions{margin-top:17px}
+@media(max-width:800px){.header{backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%)}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.header,.header.is-scrolled{background:#fffdf1ed}}
+@media(prefers-reduced-motion:reduce){.hero-scroll{animation:none;will-change:auto}}
