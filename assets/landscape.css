@@ -66,7 +66,7 @@ body{background:var(--paper);color:var(--ink)}
 .service-index{color:#aab199}.service-detail h3{color:#3f5135;font-size:17px;font-weight:600}
 .detail-plus{color:#7f926d}.detail-body p{color:#858f77;font-size:13px}
 .detail-body>span{color:#a0a88f}.detail-body>a{border-color:#d5ddc7;color:#687e54}
-.studio-about-wrap{position:relative;isolation:isolate;overflow:hidden;background:#2f422f url('/assets/creative-valley.webp') center 72%/cover;color:#fff9e9;border:0}
+.studio-about-wrap{position:relative;isolation:isolate;overflow:hidden;background:#2f422f url('/assets/creative-studio.webp') center 72%/cover;color:#fff9e9;border:0}
 .studio-about-wrap:before{content:'';position:absolute;inset:0;background:linear-gradient(100deg,#243a2be8,#263c29cb);z-index:-1}
 .studio-about{padding-block:100px;gap:90px}
 .studio-about .small-label{color:#b3c0a4}
@@ -127,7 +127,7 @@ body{background:var(--paper);color:var(--ink)}
  .header .nav-contact{font-size:9px;padding:7px 12px}.header .nav-contact svg{display:none}
  .header .menu-toggle{width:29px;height:31px;padding:4px;margin:0}
  .home-page .landscape-hero{min-height:700px;height:100svh;max-height:900px;padding-top:155px;padding-bottom:100px}
- .hero-landscape img{object-position:35% center}
+ .hero-landscape img{object-position:18% center}
  .hero-landscape:after{background:linear-gradient(#fff5dc35 0%,#fff6dc30 48%,transparent 70%,#1c2f2430)}
  .home-page .landscape-hero .studio-copy{width:calc(100% - 32px)}
  .home-page .landscape-hero .studio-copy h1{letter-spacing:-1px;line-height:1.6}
