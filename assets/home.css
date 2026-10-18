@@ -403,3 +403,6 @@ html{scroll-padding-top:120px}
 .partner-popover a{display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid #dfe7d6;padding-top:15px;color:var(--green);font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){.partner-popover:not([hidden]){transition:none;transform:none}}
+
+/* A little more breathing room and a wider headline without stretching glyphs. */
+@media(min-width:1101px){.studio-hero{grid-template-columns:1.08fr .92fr;column-gap:60px}.studio-copy h1{font-size:clamp(46px,4.45vw,64px);letter-spacing:-.8px}}

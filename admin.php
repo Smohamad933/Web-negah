@@ -3,7 +3,7 @@ require __DIR__.'/core.php'; require __DIR__.'/views.php';
 header('Cache-Control: no-store');
 $error=''; $ok=$_SESSION['flash']??''; unset($_SESSION['flash']);
 $tab=(string)($_GET['tab']??'overview');
-$tabs=['overview'=>'پیشخوان','content'=>'محتوای سایت','services'=>'خدمات','projects'=>'آثار و پروژه‌ها','brands'=>'برندهای همکار','messages'=>'درخواست‌های همکاری','settings'=>'فونت و تنظیمات','updates'=>'به‌روزرسانی'];
+$tabs=['overview'=>'پیشخوان','content'=>'محتوای سایت','services'=>'خدمات','projects'=>'آثار و پروژه‌ها','brands'=>'برندهای همکار','messages'=>'درخواست‌های همکاری','settings'=>'فونت و تنظیمات','custom-css'=>'CSS سفارشی','updates'=>'به‌روزرسانی'];
 if(!isset($tabs[$tab])) $tab='overview';
 function upload(string $field, string $type): ?string {
  if(empty($_FILES[$field]) || $_FILES[$field]['error']===UPLOAD_ERR_NO_FILE)return null;
@@ -59,6 +59,12 @@ if($_SERVER['REQUEST_METHOD']==='POST') {
   $description=trim((string)($_POST['brand_description']??''));if(strlen($description)>3000)throw new RuntimeException('توضیحات برند باید حداکثر ۳۰۰۰ بایت باشد.');
   $logo=upload('logo','image')??($existing['logo']??'');if(!empty($_POST['remove_logo']))$logo='';
   update_json('site',function($s)use($name,$logo,$id,$existing,$description){$s['brands']??=[];$brand=['name'=>$name,'logo'=>$logo,'description'=>$description,'uid'=>$existing?substr(brand_class($existing),6):bin2hex(random_bytes(8))];if($existing)$s['brands'][$id]=$brand;else $s['brands'][]=$brand;return $s;});$ok='برند همکار ذخیره شد.';
+ }
+ elseif($action==='custom_css') {
+  if(!isset($_POST['custom_css'])||!is_string($_POST['custom_css']))throw new RuntimeException('کد CSS معتبر نیست.');
+  $css=trim($_POST['custom_css']);
+  if(strlen($css)>50000||str_contains($css,'<'))throw new RuntimeException('CSS باید حداکثر ۵۰ هزار بایت و بدون تگ HTML باشد.');
+  update_json('site',fn($s)=>array_replace($s,['custom_css'=>$css]));$ok='CSS سفارشی سایت ذخیره شد.';
  }
  elseif($action==='brand_css') {
   $css=trim((string)($_POST['brand_css']??''));
@@ -124,4 +130,25 @@ function hidden(string $action): void {echo '<input type="hidden" name="csrf" va
 }</pre><label>کد CSS (بدون تگ style)<textarea name="brand_css" dir="ltr" rows="10" maxlength="20000" spellcheck="false" style="font-family:monospace;text-align:left"><?=e($site['brand_css']??'')?></textarea></label><p class="admin-hint">حداقل عرض ۱۰۰ پیکسل برای هر لوگو حفظ شده است. تغییرات CSS بلافاصله پس از ذخیره روی سایت اعمال می‌شوند؛ برای بازنشانی، این کادر را خالی و ذخیره کنید. فقط CSS مورد اعتماد وارد کنید؛ این کد می‌تواند ظاهر صفحه را تغییر دهد یا منابع خارجی بارگیری کند.</p><button class="button primary">ذخیره CSS لوگوها</button></form>
 <?php elseif($tab==='messages'):?><?php if(!$messages):?><div class="admin-panel empty"><span>↙</span><h2>هنوز درخواستی نرسیده.</h2><p>درخواست‌های فرم همکاری سایت، اینجا نمایش داده می‌شوند.</p></div><?php endif;?><?php foreach(array_reverse($messages) as $m):?><article class="admin-panel message-card <?=!$m['read']?'unread':''?>"><div class="message-top"><div><h3><?=e($m['name'])?> <?php if(!$m['read']):?><span class="badge">جدید</span><?php endif;?></h3><span><?=e($m['service'])?></span></div><time datetime="<?=e($m['date'])?>"><?=e(gmdate('Y/m/d · H:i',strtotime($m['date'])))?> UTC</time></div><a class="message-phone" href="tel:<?=e($m['phone'])?>" dir="ltr"><?=e($m['phone'])?></a><p><?=nl2br(e($m['message']))?></p><div class="row-actions"><?php if(!$m['read']):?><form method="post"><?php hidden('message_read');?><input type="hidden" name="id" value="<?=e($m['id'])?>"><button class="button secondary">علامت‌گذاری خوانده‌شده</button></form><?php endif;?><form method="post" data-confirm="این درخواست برای همیشه حذف شود؟"><?php hidden('message_delete');?><input type="hidden" name="id" value="<?=e($m['id'])?>"><button class="danger-text">حذف درخواست</button></form></div></article><?php endforeach;?>
 <?php elseif($tab==='updates'):?><?php require __DIR__.'/admin-updates.php';?>
+<?php elseif($tab==='custom-css'):?><form method="post" class="admin-panel editor-form"><?php hidden('custom_css');?><h3>CSS سفارشی کل سایت</h3><p class="admin-hint">این کد بعد از استایل‌های پیش‌فرض، فونت و CSS لوگوها در تمام صفحات عمومی (خانه، همه کارها و صفحه هر پروژه) اعمال می‌شود؛ پنل مدیریت و صفحه ورود را تغییر نمی‌دهد. تغییرات با آپدیت سورس حفظ می‌شوند.</p><label>کد CSS (بدون تگ style)<textarea name="custom_css" dir="ltr" rows="20" maxlength="50000" spellcheck="false" style="font-family:monospace;text-align:left" placeholder="/* CSS دلخواه شما */"><?=e($site['custom_css']??'')?></textarea></label><p class="admin-hint">حداکثر ۵۰ هزار بایت. فقط کد مورد اعتماد وارد کنید؛ CSS می‌تواند ظاهر صفحات را تغییر دهد یا منابع خارجی بارگیری کند. برای بازنشانی، کادر را خالی و ذخیره کنید. قبل از تغییر، از کد فعلی یک کپی بگیرید.</p><button class="button primary">ذخیره CSS سایت</button></form><div class="admin-panel editor-form"><h3>نمونه تغییرات ساده</h3><p class="admin-hint">فقط بخش موردنیاز را کپی کنید. برای تیتر اصلی از کلاس <code dir="ltr">.studio-copy h1</code> استفاده کنید؛ تغییرات دسکتاپ را داخل media query بگذارید تا موبایل به هم نریزد.</p><pre dir="ltr" style="white-space:pre-wrap;overflow-wrap:anywhere;text-align:left">/* رنگ اصلی و پس‌زمینه */
+:root {
+  --green: #246c58;
+  --paper: #fbfcf9;
+}
+
+/* اندازه و فاصله حروف تیتر، فقط دسکتاپ */
+@media (min-width: 1101px) {
+  .studio-copy h1 {
+    font-size: 64px;
+    letter-spacing: -0.8px;
+  }
+  .studio-hero {
+    column-gap: 60px;
+  }
+}
+
+/* گردی دکمه‌ها در صفحات عمومی */
+.button {
+  border-radius: 14px;
+}</pre><p class="admin-hint">کلاس‌های کاربردی: <code dir="ltr">.header</code> هدر، <code dir="ltr">.container</code> عرض محتوا، <code dir="ltr">.studio-copy h1</code> تیتر اصلی، <code dir="ltr">.project-card</code> کارت اثر، <code dir="ltr">.partner-logo img</code> لوگوی همکار و <code dir="ltr">.footer</code> فوتر.</p></div>
 <?php elseif($tab==='settings'):?><div class="admin-panel editor-form"><h3>لوگوی سایت</h3><div class="logo-setting-preview"><?php brand_logo($site);?></div><p class="admin-hint">لوگوی شفاف PNG یا WebP پیشنهاد می‌شود. فرمت JPG نیز پذیرفته می‌شود. حداکثر حجم ۵ مگابایت؛ لوگو در هدر، پایین صفحه و صفحات آثار به‌روز می‌شود.</p><form method="post" enctype="multipart/form-data"><?php hidden('logo');?><label>فایل لوگوی جدید<input type="file" name="logo" accept="image/png,image/webp,image/jpeg" required></label><button class="button primary">ذخیره لوگو</button></form><form method="post" class="reset-font"><?php hidden('reset_logo');?><button class="button secondary">بازگشت به لوگوی اصلی نگاه</button></form></div><div class="admin-panel editor-form"><h3>تصویر اصلی سایت</h3><p class="admin-hint">تصویر مربع یا عمودی با حداکثر حجم ۵ مگابایت. تصویر در قاب مستقل کنار تیتر و در موبایل زیر متن نمایش داده می‌شود؛ برای نتیجه بهتر، سوژه در مرکز و اطراف آن فضای خالی داشته باشد.</p><form method="post" enctype="multipart/form-data"><?php hidden('banners');?><label>تصویر اصلی (روشن)<input type="file" name="hero_image" accept="image/jpeg,image/png,image/webp"></label><button class="button primary">ذخیره تصویر اصلی</button></form><form method="post" class="reset-font"><?php hidden('reset_banners');?><button class="button secondary">بازگشت به تصویر پیش‌فرض</button></form></div><div class="admin-panel editor-form"><h3>فونت اختصاصی سایت</h3><p class="admin-hint">فونت فارسی با فرمت WOFF2، WOFF یا TTF بارگذاری کنید. حداکثر ۵ مگابایت. فقط فونتی که مجوز استفاده وب آن را دارید.</p><p class="font-status">فونت فعلی: <?=$site['font']?'فونت اختصاصی شما':'وزیرمتن (پیش‌فرض)'?></p><form method="post" enctype="multipart/form-data"><?php hidden('font');?><label>انتخاب فایل فونت<input type="file" name="font" accept=".woff2,.woff,.ttf" required></label><button class="button primary">بارگذاری و فعال‌سازی</button></form><?php if($site['font']):?><form method="post" class="reset-font"><?php hidden('reset_font');?><button class="button secondary">بازگشت به وزیرمتن</button></form><?php endif;?></div><div class="admin-panel editor-form"><h3>تغییر رمز عبور</h3><p class="admin-hint">نام کاربری: Mohusyn — بهتر است رمز اولیه را پس از ورود تغییر دهید.</p><form method="post"><?php hidden('password');?><label>رمز فعلی<input name="current_password" type="password" autocomplete="current-password" required></label><label>رمز جدید (حداقل ۱۰ کاراکتر)<input name="new_password" type="password" autocomplete="new-password" minlength="10" maxlength="72" required></label><button class="button primary">تغییر رمز</button></form></div><?php endif;?></main><?php endif;?><script src="/assets/admin.js" defer></script></body></html>
