@@ -13,7 +13,7 @@ menu?.addEventListener('click', () => {
 nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => closeMenu()));
 document.addEventListener('click', event => { if (!event.target.closest('.header')) closeMenu(); });
 document.addEventListener('keydown', event => { if (event.key === 'Escape' && nav?.classList.contains('open')) closeMenu(true); });
-window.matchMedia('(min-width:601px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
+window.matchMedia('(min-width:801px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
 const sections = document.querySelectorAll('main section[id]');
 if ('IntersectionObserver' in window) {
  const observer = new IntersectionObserver(entries => {
