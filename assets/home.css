@@ -510,3 +510,51 @@ html{scroll-padding-top:120px}
 @media(prefers-reduced-motion:reduce){.hero-note{transition:none}}
 /* Preserve the visible, discreet contact action in this restored layout. */
 .phone-link.call-link .phone-label{display:block}
+
+/* Text-led opening: three quiet service cards, no hero photograph. */
+.home-page .text-first-hero{min-height:680px;justify-content:center;padding:65px 200px 175px}
+.home-page .text-first-hero .studio-copy{max-width:690px}
+.home-page .text-first-hero .studio-copy h1{font-size:68px;line-height:1.35}
+.home-page .text-first-hero .studio-copy>p{max-width:420px;margin-top:19px}
+.home-page .text-first-hero .studio-actions{margin-top:24px}
+.hero-service-cards{display:contents}
+.hero-service-card{position:absolute;z-index:3;display:flex;flex-direction:column;align-items:flex-start;width:172px;padding:20px;text-align:right;border:1px solid #e2e8f2;border-radius:21px;background:linear-gradient(145deg,#ffffffed,#ffffffb8);box-shadow:0 12px 40px #152e6408;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);--card-angle:0deg;animation:hero-card-float 7s ease-in-out infinite;transition:box-shadow .3s,border-color .3s}
+.hero-service-card-1{right:1%;top:104px;--card-angle:6deg}
+.hero-service-card-2{left:1%;top:230px;--card-angle:-6deg;animation-delay:-2.3s}
+.hero-service-card-3{left:calc(50% - 86px);bottom:18px;--card-angle:-3deg;animation-delay:-4.6s}
+.hero-service-icon{display:grid;place-items:center;width:33px;height:33px;border:1px solid #e8edf7;border-radius:11px;background:#eff3fb;color:#5679b6;margin-bottom:12px}
+.hero-service-icon svg{width:18px;height:18px}
+.hero-service-card strong{font-size:14px;font-weight:700;color:#152e64;line-height:1.9}
+.hero-service-description{font-size:10px;line-height:1.9;color:#8a95a8;margin-top:4px;padding-left:9px}
+.hero-service-arrow{position:absolute;left:17px;top:20px;color:#8faadc;font-size:15px}
+.hero-service-card:hover,.hero-service-card:focus-visible{border-color:#bdcde7;box-shadow:0 17px 45px #152e6414;animation-play-state:paused}
+.hero-text-orbit{position:absolute;z-index:-1;left:7%;right:7%;top:90px;bottom:45px;border:1px solid #152e6409;border-radius:50%;transform:rotate(-13deg);pointer-events:none}
+@keyframes hero-card-float{0%,100%{transform:translateY(0) rotate(var(--card-angle))}50%{transform:translateY(-5px) rotate(var(--card-angle))}}
+@media(min-width:1001px) and (max-width:1199px){
+ .home-page .text-first-hero{padding-inline:165px}
+ .hero-service-card{width:148px;padding:17px}
+ .hero-service-card-3{left:calc(50% - 74px)}
+ .hero-service-card strong{font-size:13px}
+}
+@media(max-width:1000px){
+ .home-page .text-first-hero{min-height:0;padding:65px 0 45px;gap:40px}
+ .home-page .text-first-hero .studio-copy{max-width:740px}
+ .hero-service-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;width:min(100%,630px)}
+ .hero-service-card{position:relative;inset:auto;width:auto;min-width:0;padding:19px;animation:none;transform:none;border-radius:18px}
+ .hero-service-card strong{font-size:13px}
+ .hero-service-description{font-size:10px}
+ .hero-text-orbit{display:none}
+}
+@media(max-width:600px){
+ .home-page .text-first-hero{padding-top:45px;padding-bottom:30px;gap:30px}
+ .home-page .text-first-hero .studio-copy>p{max-width:310px;font-size:11px}
+ .hero-service-cards{gap:9px}
+ .hero-service-card{padding:13px 10px;border-radius:16px;align-items:center;text-align:center;box-shadow:0 6px 20px #152e6405}
+ .hero-service-icon{width:29px;height:29px;margin-bottom:8px;border-radius:9px}
+ .hero-service-icon svg{width:16px;height:16px}
+ .hero-service-card strong{font-size:11px;white-space:normal}
+ .hero-service-description{font-size:9px;line-height:1.9;padding:0;margin-top:5px}
+ .hero-service-arrow{display:none}
+}
+@media(prefers-reduced-motion:reduce){.hero-service-card{animation:none;transform:rotate(var(--card-angle));transition:none}}
+@media(max-width:1000px) and (prefers-reduced-motion:reduce){.hero-service-card{transform:none}}
