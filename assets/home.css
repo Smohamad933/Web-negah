@@ -558,3 +558,9 @@ html{scroll-padding-top:120px}
 }
 @media(prefers-reduced-motion:reduce){.hero-service-card{animation:none;transform:rotate(var(--card-angle));transition:none}}
 @media(max-width:1000px) and (prefers-reduced-motion:reduce){.hero-service-card{transform:none}}
+@media(min-width:1001px) and (hover:hover) and (pointer:fine){
+ .hero-service-card.is-mouse-draggable{cursor:grab;translate:0 var(--drag-y,0px);user-select:none;-webkit-user-select:none}
+ .hero-service-card.is-pointer-held{animation-play-state:paused}
+ .hero-service-card.is-dragging{cursor:grabbing;z-index:5;box-shadow:0 22px 50px #152e6420;border-color:#acbfdf}
+ html.is-dragging-hero-card,html.is-dragging-hero-card *{cursor:grabbing!important;user-select:none!important;-webkit-user-select:none!important}
+}
