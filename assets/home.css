@@ -67,8 +67,8 @@ html{scroll-padding-top:120px}
 .header .nav-contact{background:#ffffff99;transition:background .2s,border-color .2s}
 .header .nav-contact:hover{background:#dfe4ef;border-color:#aab5ca}
 .button{box-shadow:0 3px 8px #152e6409;transition:background .2s,transform .2s,box-shadow .2s}
-.primary{background:linear-gradient(135deg,#2b4373,#203255)}
-.primary:hover{background:linear-gradient(135deg,#223760,#152e64);box-shadow:0 6px 16px #152e6420}
+.primary{background:var(--green)}
+.primary:hover{background:#10234e;box-shadow:0 6px 16px #152e6420}
 .button:active{transform:translateY(0) scale(.98)}
 .button:disabled{cursor:wait;opacity:.7;transform:none;box-shadow:none}
 .studio-eyebrow{color:#5b657a;font-size:12px}
