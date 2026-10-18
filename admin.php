@@ -132,8 +132,8 @@ function hidden(string $action): void {echo '<input type="hidden" name="csrf" va
 <?php elseif($tab==='updates'):?><?php require __DIR__.'/admin-updates.php';?>
 <?php elseif($tab==='custom-css'):?><form method="post" class="admin-panel editor-form"><?php hidden('custom_css');?><h3>CSS سفارشی کل سایت</h3><p class="admin-hint">این کد بعد از استایل‌های پیش‌فرض، فونت و CSS لوگوها در تمام صفحات عمومی (خانه، همه کارها و صفحه هر پروژه) اعمال می‌شود؛ پنل مدیریت و صفحه ورود را تغییر نمی‌دهد. تغییرات با آپدیت سورس حفظ می‌شوند.</p><label>کد CSS (بدون تگ style)<textarea name="custom_css" dir="ltr" rows="20" maxlength="50000" spellcheck="false" style="font-family:monospace;text-align:left" placeholder="/* CSS دلخواه شما */"><?=e($site['custom_css']??'')?></textarea></label><p class="admin-hint">حداکثر ۵۰ هزار بایت. فقط کد مورد اعتماد وارد کنید؛ CSS می‌تواند ظاهر صفحات را تغییر دهد یا منابع خارجی بارگیری کند. برای بازنشانی، کادر را خالی و ذخیره کنید. قبل از تغییر، از کد فعلی یک کپی بگیرید.</p><button class="button primary">ذخیره CSS سایت</button></form><div class="admin-panel editor-form"><h3>نمونه تغییرات ساده</h3><p class="admin-hint">فقط بخش موردنیاز را کپی کنید. برای تیتر اصلی از کلاس <code dir="ltr">.studio-copy h1</code> استفاده کنید؛ تغییرات دسکتاپ را داخل media query بگذارید تا موبایل به هم نریزد. برای جلوگیری از بریده‌شدن تیتر، محدودیت اندازه و شکست خط تیتر اصلی زیر عرض ۱۲۰۰ پیکسل پس از CSS سفارشی اعمال می‌شود.</p><pre dir="ltr" style="white-space:pre-wrap;overflow-wrap:anywhere;text-align:left">/* رنگ اصلی و پس‌زمینه */
 :root {
-  --green: #246c58;
-  --paper: #fbfcf9;
+  --green: #152e64;
+  --paper: #f7f9fd;
 }
 
 /* اندازه و فاصله حروف تیتر، فقط دسکتاپ */
