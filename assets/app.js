@@ -13,7 +13,7 @@ menu?.addEventListener('click', () => {
 nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => closeMenu()));
 document.addEventListener('click', event => { if (!event.target.closest('.header')) closeMenu(); });
 document.addEventListener('keydown', event => { if (event.key === 'Escape' && nav?.classList.contains('open')) closeMenu(true); });
-window.matchMedia('(min-width:801px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
+window.matchMedia('(min-width:601px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
 const sections = document.querySelectorAll('main section[id]');
 if ('IntersectionObserver' in window) {
  const observer = new IntersectionObserver(entries => {
@@ -122,73 +122,4 @@ motionToggle?.addEventListener('click', () => {
  }); };
  media.addEventListener('change',configure); configure();
  window.addEventListener('resize',close); window.addEventListener('scroll',close,{passive:true});
-})();
-
-// Mouse dragging changes only vertical position; ordinary link clicks stay intact.
-(() => {
- const hero = document.querySelector('.text-first-hero');
- if (!hero) return;
- const cards = [...hero.querySelectorAll('.hero-service-card')];
- const desktop = matchMedia('(min-width:1001px) and (hover:hover) and (pointer:fine)');
- const offsets = new Map(cards.map(card => [card,0]));
- const suppressed = new WeakSet();
- let active = null;
- const limits = card => {
-  const box=card.getBoundingClientRect(), area=hero.getBoundingClientRect();
-  let low=area.top+12-box.top, high=area.bottom-12-box.bottom;
-  const obstacles=[hero.querySelector('.studio-copy'),...cards.filter(other=>other!==card)];
-  obstacles.forEach(other=>{
-   const r=other.getBoundingClientRect();
-   if(box.right+10<=r.left||box.left-10>=r.right)return;
-   if(box.bottom<=r.top+1)high=Math.min(high,r.top-12-box.bottom);
-   else if(box.top>=r.bottom-1)low=Math.max(low,r.bottom+12-box.top);
-  });
-  return [Math.min(low,0),Math.max(high,0)];
- };
- const place = (card,y) => { offsets.set(card,y);card.style.setProperty('--drag-y',`${y}px`); };
- const finish = cancel => {
-  if(!active)return;
-  const {card,pointer,startOffset,moved}=active;active=null;
-  if(cancel)place(card,startOffset);
-  if(moved)suppressed.add(card);
-  card.classList.remove('is-pointer-held','is-dragging');
-  if(card.hasPointerCapture(pointer))card.releasePointerCapture(pointer);
-  document.documentElement.classList.remove('is-dragging-hero-card');
- };
- cards.forEach(card=>{
-  card.addEventListener('dragstart',e=>{if(desktop.matches)e.preventDefault();});
-  card.addEventListener('pointerdown',e=>{
-   if(!desktop.matches||e.pointerType!=='mouse'||e.button!==0||active)return;
-   suppressed.delete(card);card.classList.add('is-pointer-held');
-   const [low,high]=limits(card);
-   active={card,pointer:e.pointerId,startY:e.clientY,startX:e.clientX,startOffset:offsets.get(card),low,high,moved:false};
-   card.setPointerCapture(e.pointerId);
-  });
-  card.addEventListener('pointermove',e=>{
-   if(!active||active.card!==card||active.pointer!==e.pointerId)return;
-   const dy=e.clientY-active.startY;
-   if(!active.moved&&Math.hypot(dy,e.clientX-active.startX)<5)return;
-   active.moved=true;e.preventDefault();
-   card.classList.add('is-dragging');document.documentElement.classList.add('is-dragging-hero-card');
-   place(card,active.startOffset+Math.max(active.low,Math.min(active.high,dy)));
-  });
-  card.addEventListener('pointerup',e=>{if(active?.pointer===e.pointerId)finish(false);});
-  card.addEventListener('pointercancel',()=>finish(true));
-  card.addEventListener('lostpointercapture',()=>{if(active?.card===card)finish(false);});
-  card.addEventListener('click',e=>{if(suppressed.has(card)){suppressed.delete(card);e.preventDefault();e.stopImmediatePropagation();}},true);
-  card.addEventListener('keydown',e=>{
-   if(!desktop.matches||!e.altKey||!['ArrowUp','ArrowDown'].includes(e.key))return;
-   e.preventDefault();const [low,high]=limits(card), step=e.key==='ArrowUp'?-12:12;
-   place(card,offsets.get(card)+Math.max(low,Math.min(high,step)));
-  });
- });
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&active){e.preventDefault();finish(true);}});
- window.addEventListener('blur',()=>finish(false));
- const reset = () => {
-  finish(true);cards.forEach(card=>{place(card,0);card.classList.toggle('is-mouse-draggable',desktop.matches);
-   if(desktop.matches)card.setAttribute('aria-description','برای جابه‌جایی عمودی با ماوس بکشید؛ با کیبورد Alt و کلید بالا یا پایین. کلیک برای دیدن آثار.');
-   else card.removeAttribute('aria-description');
-  });
- };
- desktop.addEventListener('change',reset);window.addEventListener('resize',reset);reset();
 })();
