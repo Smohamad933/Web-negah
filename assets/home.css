@@ -406,3 +406,29 @@ html{scroll-padding-top:120px}
 
 /* A little more breathing room and a wider headline without stretching glyphs. */
 @media(min-width:1101px){.studio-hero{grid-template-columns:1.08fr .92fr;column-gap:60px}.studio-copy h1{font-size:clamp(46px,4.45vw,64px);letter-spacing:-.8px}}
+
+/* Requested bold editorial headings: exact desktop sizes, fluid below desktop. */
+@media(min-width:1200px){
+ .studio-copy h1>span{display:block;white-space:nowrap;font-weight:900;font-size:70px}
+ .services-intro h2{font-size:49px;font-weight:900;line-height:1.4;letter-spacing:-1.5px}
+ .works-section h2{font-size:31px;font-weight:800;letter-spacing:-1px}
+ .studio-about h2{font-size:35px;font-weight:800;letter-spacing:-2px;line-height:1.2}
+ .contact-copy h2{font-size:36px;line-height:1.4;font-weight:800;letter-spacing:-1px}
+}
+@media(max-width:1199px){
+ .studio-copy h1{font-size:clamp(34px,4.65vw,56px)}
+ .studio-copy h1>span{display:block;font-size:inherit;font-weight:900}
+ .services-intro h2{font-size:clamp(30px,4.1vw,44px);font-weight:900;line-height:1.5;letter-spacing:-1px}
+ .works-section h2{font-size:clamp(26px,3.3vw,31px);font-weight:800;letter-spacing:-1px}
+ .studio-about h2{font-size:clamp(28px,3.4vw,35px);font-weight:800;letter-spacing:-1.2px;line-height:1.5}
+ .contact-copy h2{font-size:clamp(28px,3.5vw,36px);font-weight:800;letter-spacing:-1px;line-height:1.5}
+}
+@media(max-width:600px){
+ .studio-copy h1{font-size:clamp(30px,8.5vw,44px);letter-spacing:-1px;line-height:1.65}
+ .studio-copy h1>span{white-space:normal;overflow-wrap:anywhere;text-wrap:balance}
+ .services-intro h2{font-size:clamp(28px,7.5vw,36px)}
+ .studio-about h2,.contact-copy h2{font-size:clamp(27px,7.2vw,34px);line-height:1.55}
+}
+.phone-link.call-link{display:inline-flex;width:auto;max-width:none;gap:12px;margin-top:26px;padding:0;align-items:center}
+.call-link .phone-label{font-size:15px;font-weight:500;color:var(--green);line-height:1.8;border-bottom:1px solid transparent;transition:border-color .2s}
+.call-link:hover .phone-label{border-color:currentColor}
